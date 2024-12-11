@@ -49,7 +49,6 @@ let UrlService = class UrlService {
                 throw new common_1.ConflictException('A short link already exists for this URL');
             }
             let shortenedLink = await this.generateUniqueShortLink(createLinkDto.customUrl);
-            console.log(1212, shortenedLink);
             const link = await this._urlRepository.createLink(userId, createLinkDto, shortenedLink);
             return link;
         }
