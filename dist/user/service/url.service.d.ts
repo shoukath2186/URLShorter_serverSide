@@ -2,6 +2,7 @@ import { CreateLinkDto } from '../dto/createLink.dto';
 import { Url } from '../schema/url.schema';
 import { Model, Types } from 'mongoose';
 import { UrlRepository } from '../repository/url.repository';
+import { ShortUrl } from '../dto/user.orgUrl.dto';
 export declare class UrlService {
     private readonly _urlRepository;
     private _urlModel;
@@ -20,4 +21,9 @@ export declare class UrlService {
     deleteLink(id: string): Promise<{
         message: string;
     }>;
+    takeOrgUrl(ShortUrl: ShortUrl): Promise<string | (import("mongoose").Document<unknown, {}, Url> & Url & Required<{
+        _id: unknown;
+    }> & {
+        __v: number;
+    })>;
 }

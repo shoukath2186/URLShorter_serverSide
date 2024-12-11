@@ -16,6 +16,7 @@ exports.UrlController = void 0;
 const common_1 = require("@nestjs/common");
 const jwtUserGuard_1 = require("../../guards/jwtUserGuard");
 const createLink_dto_1 = require("../dto/createLink.dto");
+const user_orgUrl_dto_1 = require("../dto/user.orgUrl.dto");
 const url_service_1 = require("../service/url.service");
 let UrlController = class UrlController {
     constructor(_urlService) {
@@ -77,6 +78,37 @@ let UrlController = class UrlController {
             });
         }
     }
+    async takeUserUrl(request, res, ShortUrl) {
+        try {
+            const data = await this._urlService.takeOrgUrl(ShortUrl);
+            if (data) {
+                res.status(200).json({
+                    success: true,
+                    data: data,
+                });
+            }
+            else {
+                res.status(400).json({
+                    success: false,
+                    message: 'This email did not exists.',
+                });
+            }
+        }
+        catch (error) {
+            if (error instanceof common_1.ConflictException) {
+                res.status(409).json({
+                    success: false,
+                    message: error.message,
+                });
+            }
+            else {
+                res.status(500).json({
+                    success: false,
+                    message: error.message || 'Internal Server Error',
+                });
+            }
+        }
+    }
 };
 exports.UrlController = UrlController;
 __decorate([
@@ -104,6 +136,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UrlController.prototype, "deleteLink", null);
+__decorate([
+    (0, common_1.Post)('url'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, user_orgUrl_dto_1.ShortUrl]),
+    __metadata("design:returntype", Promise)
+], UrlController.prototype, "takeUserUrl", null);
 exports.UrlController = UrlController = __decorate([
     (0, common_1.UseGuards)(jwtUserGuard_1.JwtUserGuard),
     (0, common_1.Controller)('user'),

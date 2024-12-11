@@ -18,7 +18,7 @@ const user_registration_1 = require("../dto/user.registration");
 const user_repository_1 = require("../repository/user.repository");
 const generateToken_1 = require("../utils/generateToken");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 let UserService = class UserService {
     constructor(_userRepository, jwtService) {
         this._userRepository = _userRepository;

@@ -48,6 +48,16 @@ let UrlRepository = class UrlRepository {
             .find({ userId: userId })
             .sort({ createdAt: -1 });
     }
+    async takeOrgUrl(ShortUrl) {
+        const orgUrl = await this._urlModel.findOne({ shortenedLink: ShortUrl.url });
+        if (orgUrl) {
+            return orgUrl.originalLink;
+        }
+        else {
+            return orgUrl;
+        }
+        ;
+    }
 };
 exports.UrlRepository = UrlRepository;
 exports.UrlRepository = UrlRepository = __decorate([

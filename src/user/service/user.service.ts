@@ -12,7 +12,7 @@ import { LoginDto } from '../dto/user.login';
 import { clearTokenCookies, generateToken } from '../utils/generateToken';
 import { JwtService } from '@nestjs/jwt';
 import { Types } from 'mongoose';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 
 @Injectable()

@@ -12,11 +12,11 @@ async function bootstrap() {
     origin: process.env.FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    credentials: true,
+    credentials: true, 
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   
-  const port=process.env.PORT ?? 2000
+  const port=process.env.PORT ?? 2000 
   app.use(cookieParser());
   await app.listen(port,()=>{
     console.log(port); 

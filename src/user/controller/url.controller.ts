@@ -14,6 +14,7 @@ import {
 import { Response } from 'express';
 import { JwtUserGuard } from 'src/guards/jwtUserGuard';
 import { CreateLinkDto } from '../dto/createLink.dto';
+import { ShortUrl } from '../dto/user.orgUrl.dto';
 import { UrlService } from '../service/url.service';
 
 @UseGuards(JwtUserGuard)
@@ -68,6 +69,7 @@ export class UrlController {
   @Delete(':id')
   async deleteLink(@Param('id') id: string,@Res() res: Response) {
     const data= await this._urlService.deleteLink(id);
+
     if (data) {
       res.status(200).json({
         success: true,
@@ -79,6 +81,37 @@ export class UrlController {
         message: 'Failed to delete a new link. Please try again.',
       });
     }
+  }
+  @Post('url')
+  async takeUserUrl(@Req() request, @Res() res: Response, @Body() ShortUrl:ShortUrl){
+    
+    try {
+      const data=await this._urlService.takeOrgUrl(ShortUrl)
+      if (data) {
+        res.status(200).json({
+          success: true,
+          data: data,
+        });
+      } else {
+        res.status(400).json({
+          success: false,
+          message: 'This email did not exists.',
+        });
+      }
+    } catch (error) {
+      if (error instanceof ConflictException) {
+        res.status(409).json({
+          success: false,
+          message: error.message,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: error.message || 'Internal Server Error',
+        });
+      }
+    }
+    
   }
 
 }

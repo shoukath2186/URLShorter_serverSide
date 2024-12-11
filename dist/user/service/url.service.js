@@ -48,7 +48,8 @@ let UrlService = class UrlService {
             if (existingLink) {
                 throw new common_1.ConflictException('A short link already exists for this URL');
             }
-            const shortenedLink = await this.generateUniqueShortLink(createLinkDto.customUrl);
+            let shortenedLink = await this.generateUniqueShortLink(createLinkDto.customUrl);
+            console.log(1212, shortenedLink);
             const link = await this._urlRepository.createLink(userId, createLinkDto, shortenedLink);
             return link;
         }
@@ -76,6 +77,25 @@ let UrlService = class UrlService {
             throw new common_1.NotFoundException('Link not found');
         }
         return { message: 'Link deleted successfully' };
+    }
+    async takeOrgUrl(ShortUrl) {
+        try {
+            const orgUrl = await this._urlRepository.takeOrgUrl(ShortUrl);
+            if (orgUrl) {
+                return orgUrl;
+            }
+            else {
+                throw new common_1.ConflictException('The provided URL is invalid. Please check the format and try again.');
+            }
+        }
+        catch (error) {
+            if (error instanceof common_1.ConflictException) {
+                throw error;
+            }
+            else {
+                throw new common_1.InternalServerErrorException('An unexpected error occurred while login the user.');
+            }
+        }
     }
 };
 exports.UrlService = UrlService;

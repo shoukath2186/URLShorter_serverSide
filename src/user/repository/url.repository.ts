@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Url } from '../schema/url.schema';
 import { CreateLinkDto } from '../dto/createLink.dto';
+import { ShortUrl } from '../dto/user.orgUrl.dto';
 
 @Injectable()
 export class UrlRepository {
@@ -23,7 +24,8 @@ export class UrlRepository {
         shortenedLink: string,
     ) {
         const { title, longUrl, customUrl, qrCode } = createLinkDto;
-
+    
+        
         const changedUserId = new Types.ObjectId(userId);
 
         const newLink = new this._urlModel({
@@ -48,6 +50,17 @@ export class UrlRepository {
       .sort({ createdAt: -1 })
     }
 
+    async takeOrgUrl(ShortUrl:ShortUrl){
+      
+      const orgUrl=await this._urlModel.findOne({shortenedLink:ShortUrl.url})
 
+      if(orgUrl){
+        return orgUrl.originalLink
+      }else{
+          return orgUrl;
+      };
+      
+      
+    }
 
 }
